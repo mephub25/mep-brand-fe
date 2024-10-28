@@ -11,7 +11,7 @@ const TopBar: React.FC = () => {
           <BsPhone className="text-secondary text-3xl" />
           <div className="">
             <h1 className="font-bold text-primary uppercase">Call Us</h1>
-            <p className="text-dark text-sm">+250 785 920 279</p>
+            <p className="text-dark text-sm">+250 781 175 264</p>
           </div>
         </div>
         <div className="flex items-center gap-2">

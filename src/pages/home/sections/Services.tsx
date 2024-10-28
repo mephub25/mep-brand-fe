@@ -75,9 +75,9 @@ const Services = () => {
 
   return (
     <div id="services-1" className="h-max px-5 py-8 md:p-16 relative overflow-y-hidden">
-      <Title ref={titleRef} title="OUR SERVICES" color="common.black" className="mx-auto my-8" />
+      <Title ref={titleRef} title="OUR SERVICES" color="common.white" className="mx-auto my-8" />
       <img
-        src="/images/bg-services.png"
+        src="/images/bg-services-2.jpg"
         alt="services background"
         className="size-full object-cover absolute top-0 left-0 -z-10"
       />
@@ -97,7 +97,7 @@ const Services = () => {
           }
 
           return (
-            <div className="w-full max-w-[1150px] flex flex-col lg:flex-row gap-4 bg-black/5 backdrop-blur-sm border-2 border-muted rounded-2xl text-white overflow-clip">
+            <div className="w-full max-w-[1150px] flex flex-col lg:flex-row gap-4 bg-black/5 backdrop-blur-sm border-2 border-primary-foreground rounded-2xl text-white overflow-clip">
               <div className={clsx("basis-1/2 relative", index % 2 !== 0 && "lg:order-last")}>
                 <div className="aspect-video lg:aspect-auto lg:absolute top-0 left-0 bottom-0 right-0 overflow-hidden p-3 lg:p-0 m-auto lg:m-3">
                   <img src={url} alt={`service ${index}`} className="h-full object-scale-down m-auto" />

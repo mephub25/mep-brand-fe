@@ -91,9 +91,7 @@ const Footer = () => {
               <div className="flex flex-row items-center gap-2 my-3">
                 <FiPhone size="35px" className="text-secondary" />
                 <p>
-                  +250785920279,
-                  <br />
-                  +250781175264
+                  +250781175264,
                 </p>
               </div>
               <div className="flex flex-row items-center gap-2 my-3">

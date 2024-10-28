@@ -139,7 +139,7 @@ const Solutions = () => {
     <div id="services" className="min-h-screen relative overflow-hidden">
       <div className="absolute top-0 left-0 bg-black solutions w-[60%] aspect-[9/6]"></div>
       <div className="flex xs:flex-row flex-col items-center justify-center content-around pt-6 py-4 sm:px-10 px-4">
-        <div ref={headingRef} className="max-w-[500px]">
+        <div ref={headingRef} className="4xl:max-w-[750px] 3xl:max-w-[640px] max-w-[500px]">
           <h1 className="md:text-[40px] sm:text-[30px] text-[24px] font-semibold">
             Explore Our solutions and Services
           </h1>
