@@ -544,7 +544,7 @@ const About = () => {
                 OUR VISION
               </div>
               Our vision is to be a leading provider of innovative, sustainable
-              MEP solutions in Rwanda. We strive to provide clients
+              MEP solutions in Africa. We strive to provide clients
               with integrated MEP systems To improve building performance,
               safety, and energy efficiency.
             </div>

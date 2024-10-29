@@ -289,7 +289,7 @@ const Contact = () => {
         </div>
         <div className="absolute -bottom-[100px] right-0 left-0 h-[400px] w-full bg-black/0 md:pt-0 pt-12">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.482461408577!2d30.105876074588245!3d-1.960674798021562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca65447effcd3%3A0xd265fb1830816643!2sIKAZE%20Internet%20Cafe%20and%20photo%20studio%20Kismenti%20Remera!5e0!3m2!1sen!2srw!4v1725787049666!5m2!1sen!2srw"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.4881265050853!2d30.10801377509814!3d-1.9582955367300996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca65565281ab9%3A0x1d5d1fe92bed69e0!2s7%20KG%2011%20Ave%2C%20Kigali!5e0!3m2!1sen!2srw!4v1730199893274!5m2!1sen!2srw"
             style={{ border: 0 }}
             loading="lazy"
             className="w-full h-full"
