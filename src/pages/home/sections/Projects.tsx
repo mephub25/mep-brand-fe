@@ -271,9 +271,11 @@ const Projects = () => {
         )}
       </div>
       {isSmallMobile && (
-        <Button variant="contained" color="secondary" className="capitalize text-base w-full px-10 font-normal">
-          View All
-        </Button>
+        <Link to="/projects">
+          <Button variant="contained" color="secondary" className="capitalize text-base w-full px-10 font-normal">
+            View All
+          </Button>
+        </Link>
       )}
     </div>
   );

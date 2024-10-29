@@ -145,6 +145,7 @@ const Carousel = forwardRef<CarouselRef, CarouselProps>(
         });
 
         const draggable = new Draggable(proxy, {
+          type: "x",
           trigger: slideContainerRef.current,
           onRelease: () => {
             const prevDuration = slideDuration;
