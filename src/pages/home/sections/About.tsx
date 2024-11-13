@@ -120,8 +120,7 @@ const About: React.FC = () => {
           electrical installations, the company emphasizes safety, security, and
           comfort in property management. Their skilled team stays ahead with
           the latest technology, ensuring optimal performance and compliance
-          with regulatory standards. Committed to client satisfaction, MEP
-          Electric Technology Ltd delivers innovative MEP solutions, completing
+          with regulatory standards. Committed to client satisfaction, MEP Erictric Technology Ltd delivers innovative MEP solutions, completing
           projects on time and within budget.{" "}
         </p>
         <p className="md:text-base text-sm">
