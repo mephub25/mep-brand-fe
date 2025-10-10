@@ -9,7 +9,8 @@ const About: React.FC = () => {
   const leftImageRef = useRef<HTMLDivElement>(null);
   const purpleBoxRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const button1Ref = useRef<HTMLButtonElement>(null);
+  const button2Ref = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     gsap.fromTo(
@@ -61,13 +62,29 @@ const About: React.FC = () => {
     );
 
     gsap.fromTo(
-      buttonRef.current,
+      button1Ref.current,
       { scale: 0.5, opacity: 0 },
       {
         scale: 1,
         opacity: 1,
         scrollTrigger: {
-          trigger: buttonRef.current,
+          trigger: button1Ref.current,
+          start: "top 120%",
+          end: "top 60%",
+          scrub: true,
+        },
+      }
+    );
+
+
+      gsap.fromTo(
+      button2Ref.current,
+      { scale: 0.5, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        scrollTrigger: {
+          trigger: button2Ref.current,
           start: "top 120%",
           end: "top 60%",
           scrub: true,
@@ -127,15 +144,30 @@ const About: React.FC = () => {
           Prospective clients are invited to contact them for customized
           services tailored to specific project needs
         </p>
+       
+       <div className="flex gap-4">
         <Button
           className="bg-secondary hover:bg-secondary/80 text-white capitalize text-base w-fit px-14 py-4 mt-10 font-normal"
-          ref={buttonRef}
+          ref={button1Ref}
           onClick={() => {
             window.location.href = "/about";
           }}
         >
           Read more
         </Button>
+
+          <Button
+           className="bg-white text-secondary border border-secondary hover:bg-secondary hover:text-white capitalize text-base w-fit px-14 py-4 mt-10 font-normal transition-all duration-300"
+          ref={button2Ref}
+          onClick={() => {
+            window.open("/files/MEP_Profile.pdf", "_blank");
+          }}
+        >
+          View our profile
+        </Button>
+       </div>
+     
+        
       </div>
     </div>
   );
