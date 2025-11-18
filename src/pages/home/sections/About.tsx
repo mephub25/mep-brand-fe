@@ -157,7 +157,7 @@ const About: React.FC = () => {
         </Button>
 
           <Button
-           className="bg-white text-secondary border border-secondary hover:bg-secondary hover:text-white capitalize text-base w-fit px-14 py-4 mt-10 font-normal transition-all duration-300"
+           className="bg-blue-500 text-white border border-secondary hover:bg-secondary hover:text-white capitalize text-base w-fit px-14 py-4 mt-10 font-normal transition-all duration-300"
           ref={button2Ref}
           onClick={() => {
             window.open("/files/MEP_Profile.pdf", "_blank");
