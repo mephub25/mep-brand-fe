@@ -24,12 +24,12 @@ export const mediaLinks = [
   },
   {
     name: "Instagram",
-    href: "https://instagram.com",
+    href: "https://www.instagram.com/meperictrictechnologyltd/?igsh=aGc1NHUwNXFwbnU3",
     component: FaInstagram,
   },
   {
     name: "Facebook",
-    href: "https://facebook.com",
+    href: "https://www.facebook.com/meperictrictechnologyltd",
     component: ImFacebook,
   },
   {

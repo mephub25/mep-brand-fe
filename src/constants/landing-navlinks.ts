@@ -8,6 +8,7 @@ export const LandingNavLinks = [
     name: "about",
     slug: "about",
     href: "/#about",
+    
   },
   {
     name: "services",
@@ -23,6 +24,12 @@ export const LandingNavLinks = [
     name: "projects",
     slug: "projects",
     href: "/#projects",
+  },
+    {
+    name: "Our team",
+    slug: "team",
+    href: "/#team",
+    page: "about/",
   },
   {
     name: "testimonials",

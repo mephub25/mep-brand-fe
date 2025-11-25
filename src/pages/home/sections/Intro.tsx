@@ -1,5 +1,7 @@
+import { useState } from "react";
 import NavBar from "../../../components/NavBar";
 import IntroSlider from "../../../components/IntroSlider";
+import LoginOverlay from "../../authontication/login";
 
 const slides = [
   {
@@ -24,7 +26,14 @@ const slides = [
   },
 ];
 
+  
+
 const Intro = () => {
+  // Add state to control login overlay
+ const [loginOpen, setLoginOpen] = useState(false);
+
+  const handleCloseLogin = () => setLoginOpen(false);
+
   return (
     <div
       id="home"
@@ -32,7 +41,12 @@ const Intro = () => {
     >
       <div className="z-10">
         <NavBar />
-        <IntroSlider slides={slides} />
+        <IntroSlider slides={slides} setLoginOpen={setLoginOpen} />
+
+
+      
+       {/* Login overlay */}
+        <LoginOverlay isOpen={loginOpen} onClose={handleCloseLogin} />
       </div>
     </div>
   );

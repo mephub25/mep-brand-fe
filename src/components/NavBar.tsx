@@ -12,10 +12,12 @@ import { IoArrowForward } from "react-icons/io5";
 import { RiMenu3Fill } from "react-icons/ri";
 import { LandingNavLinks } from "../constants/landing-navlinks";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import LoginOverlay from "../pages/authontication/login"; 
 
 const NavBar = ({ fixNavBar = true }: { fixNavBar?: boolean }) => {
   const [pageScrolled, setPageScrolled] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const [loginOpen, setLoginOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,9 +54,14 @@ const NavBar = ({ fixNavBar = true }: { fixNavBar?: boolean }) => {
     }
   }, [location.hash]);
 
-  const handleNavigation = (slug: string) => {
+const handleNavigation = (slug: string, page?: string) => {
+  if (page) {
+    navigate(`/${page}#${slug}`);
+  } else {
     navigate(`/#${slug}`);
-  };
+  }
+};
+
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -93,13 +100,22 @@ const NavBar = ({ fixNavBar = true }: { fixNavBar?: boolean }) => {
               ) : (
                 <span
                   key={index}
-                  onClick={() => handleNavigation(item.slug)}
+                  onClick={() => handleNavigation(item.slug,item.page)}
                   className="text-white capitalize hover:text-secondary cursor-pointer"
                 >
                   {item.name}
                 </span>
               )
             )}
+
+               {/* Login Button */}
+            <button
+              onClick={() => setLoginOpen(true)}
+              className="ml-2 bg-white  text-black py-2 px-6 rounded-md capitalize hover:text-secondary transition-colors"
+            >
+              Login
+            </button>
+           
           </div>{" "}
         </div>
       </nav>
@@ -128,75 +144,97 @@ const NavBar = ({ fixNavBar = true }: { fixNavBar?: boolean }) => {
           </IconButton>
         </div>
       </nav>
-      <Drawer
-        open={open}
-        onClose={toggleDrawer(false)}
-        className=""
-        sx={{
-          "& .MuiDrawer-paper": {
-            width: "250px",
-            backgroundColor: "#004C83",
-            color: "white",
-          },
-        }}
+ <Drawer
+  open={open}
+  onClose={toggleDrawer(false)}
+  className=""
+  sx={{
+    "& .MuiDrawer-paper": {
+      width: "250px",
+      backgroundColor: "#004C83",
+      color: "white",
+    },
+  }}
+>
+  {/* Drawer Header */}
+  <div className="w-[250px] bg-primary text-white">
+    <List>
+      <ListItem
+        disablePadding
+        onClick={toggleDrawer(false)}
       >
-        <div className="w-[250px] bg-primary text-white">
-          <List>
-            <ListItem
-              disablePadding
-              className={``}
-              onClick={toggleDrawer(false)}
-            >
-              <ListItemButton>
-                <div className="w-full flex items-center justify-between">
-                  <img
-                    src="/logo-half.png"
-                    alt="logo"
-                    className="h-10 w-10 object-contain"
-                  />
-                  <IconButton className="">
-                    <IoArrowForward className="text-white" />
-                  </IconButton>
-                </div>
-              </ListItemButton>
-            </ListItem>
-          </List>
+        <ListItemButton>
+          <div className="w-full flex items-center justify-between">
+            <img
+              src="/logo-half.png"
+              alt="logo"
+              className="h-10 w-10 object-contain"
+            />
+            <IconButton>
+              <IoArrowForward className="text-white" />
+            </IconButton>
+          </div>
+        </ListItemButton>
+      </ListItem>
+    </List>
+  </div>
+
+  {/* Drawer Navigation */}
+  <nav>
+    <List>
+      <Divider />
+
+      {/* Dynamically Render Nav Links */}
+      {LandingNavLinks?.map((item, index: number) => (
+        <div
+          onClick={() => {
+            setOpen(false);
+
+            if (item.name === "contact") {
+              navigate("/contact");
+            } else if (item.page) {
+              // If the link belongs to another page like About
+              navigate(`/${item.page}#${item.slug}`);
+            } else {
+              // Normal homepage section navigation
+              handleNavigation(item.slug);
+            }
+          }}
+          key={index}
+        >
+          <ListItem
+            disablePadding
+            className="hover:bg-primary hover:text-secondary"
+          >
+            <ListItemButton>
+              <ListItemText
+                primary={item.name}
+                className="capitalize text-center"
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
         </div>
-        <nav className="">
-          <List>
-            <Divider />
-            {LandingNavLinks?.map((item, index: number) => {
-              return (
-                <div
-                  onClick={() => {
-                    setOpen(false);
-                    if (item.name === "contact") {
-                      navigate("/contact");
-                    } else {
-                      handleNavigation(item.slug);
-                    }
-                  }}
-                  key={index}
-                >
-                  <ListItem
-                    disablePadding
-                    key={index}
-                    className={`hover:bg-primary hover:text-secondary`}
-                  >
-                    <ListItemButton>
-                      <ListItemText
-                        primary={item.name}
-                        className="capitalize text-center"
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                  <Divider />
-                </div>
-              );
-            })}
-          </List>
-        </nav>
-      </Drawer>
+      ))}
+
+   
+        {/* Login Button in Drawer */}
+            <div onClick={() => { setOpen(false); setLoginOpen(true); }}>
+              <ListItem disablePadding className="hover:bg-primary hover:text-secondary">
+                <ListItemButton>
+                  <ListItemText primary="Login" className="capitalize text-center" />
+                </ListItemButton>
+              </ListItem>
+              <Divider />
+            </div>
+    </List>
+  </nav>
+</Drawer>
+
+
+
+      {/* Login Overlay */}
+      <LoginOverlay isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
     </>
   );
 };

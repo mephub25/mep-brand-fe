@@ -1,8 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { HiArrowRight } from "react-icons/hi";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const IntroSlider = ({ slides }: any) => {
+
+
+interface IntroSliderProps {
+  slides: any[];
+  setLoginOpen: (value: boolean) => void; // prop to open login overlay
+}
+
+const IntroSlider = ({ slides, setLoginOpen }: IntroSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
@@ -238,20 +246,31 @@ const IntroSlider = ({ slides }: any) => {
           {slides[currentIndex].paragraph}
         </p>
 
-        <div className="absolute bottom-10 left-10 space-x-2 mt-4 sm:flex hidden">
-          {slides.map((_: any, index: number) => (
-            <div
-              key={index}
-              ref={(el) => (dotRefs.current[index] = el!)}
-              className={`h-3 w-3 rounded-full cursor-pointer ${
-                index === currentIndex
-                  ? "bg-secondary"
-                  : "bg-transparent border border-background/50"
-              }`}
-              onClick={() => changeSlide(index)}
-            ></div>
-          ))}
-        </div>
+        <div className="absolute bottom-10 left-10 mt-4 sm:flex hidden items-center gap-4">
+  {/* Slide Dots */}
+  <div className="flex space-x-2">
+    {slides.map((_: any, index: number) => (
+      <div
+        key={index}
+        ref={(el) => (dotRefs.current[index] = el!)}
+        className={`h-3 w-3 rounded-full cursor-pointer ${
+          index === currentIndex
+            ? "bg-secondary"
+            : "bg-transparent border border-background/50"
+        }`}
+        onClick={() => changeSlide(index)}
+      ></div>
+    ))}
+  </div>
+   {/* Login Button */}
+          <button
+            onClick={() => setLoginOpen(true)}
+            className="bg-secondary flex gap-2 text-white py-2 px-4 rounded-full text-sm hover:bg-secondary/90 transition-colors"
+          >
+            <HiArrowRight className="w-4 h-4" /> Login 
+          </button>
+</div>
+
       </div>
 
       <div className="flex flex-col flex-1 md:items-end items-center justify-end content-end overflow-hidden bg-fuchsia-600/0 h-full lg:w-auto md:w-1/2 w-full">
