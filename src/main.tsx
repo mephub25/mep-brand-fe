@@ -8,12 +8,16 @@ import "./index.css";
 import { store } from "./store/store";
 import CustomThemeProvider from "./theme/mui.theme";
 
+import { ToastProvider } from "./context/ToastContext"; // Import the ToastProvider
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <StyledEngineProvider injectFirst>
       <Provider store={store}>
         <CustomThemeProvider>
-          <RouterProvider router={routes} />
+             <ToastProvider> {/* Add ToastProvider here */}
+            <RouterProvider router={routes} />
+          </ToastProvider>
         </CustomThemeProvider>
       </Provider>
     </StyledEngineProvider>

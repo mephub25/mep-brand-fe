@@ -1,3 +1,6 @@
+import { useState } from "react";
+import axios from "axios";
+
 import { Button, TextField } from "@mui/material";
 import { CiMail } from "react-icons/ci";
 import { FiMapPin, FiPhone } from "react-icons/fi";
@@ -9,6 +12,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TopBar from "../../components/TopBar";
 
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
@@ -16,6 +22,32 @@ const Contact = () => {
   const pageHeaderRef = useRef<HTMLDivElement | null>(null);
   const boxRef = useRef<HTMLDivElement | null>(null);
   const userRef: any = useRef(null);
+  const [loading, setLoading] = useState(false);
+
+   const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const handleChange = (e: any) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+const sendMessage = async () => {
+  setLoading(true);
+  try {
+    await axios.post("http://localhost:3000/api/v1/contact", form);
+    toast.success("Message sent successfully!");
+    setForm({ name: "", email: "", subject: "", message: "" });
+  } catch (err) {
+    toast.error("Failed to send message.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useLayoutEffect(() => {
     gsap.fromTo(
@@ -205,6 +237,10 @@ const Contact = () => {
                 <div className="">
                   <h1 className="text-white mb-2">Names</h1>
                   <TextField
+                   name="name"
+                   value={form.name}
+                   onChange={handleChange}
+
                     sx={{
                       input: {
                         color: "#fff",
@@ -223,6 +259,10 @@ const Contact = () => {
                 <div className="mt-4">
                   <h1 className="text-white mb-2">Email</h1>
                   <TextField
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+
                     sx={{
                       input: {
                         color: "#fff",
@@ -241,6 +281,9 @@ const Contact = () => {
                 <div className="mt-4">
                   <h1 className="text-white mb-2">Subject</h1>
                   <TextField
+                    name="subject"
+                    value={form.subject}
+                    onChange={handleChange}
                     sx={{
                       input: {
                         color: "#fff",
@@ -259,6 +302,11 @@ const Contact = () => {
                 <div className="mt-4">
                   <h1 className="text-white mb-2">Message</h1>
                   <TextField
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
+
+ 
                     id="outlined-multiline-flexible"
                     sx={{
                       input: {
@@ -277,12 +325,15 @@ const Contact = () => {
                     className="text-xs bg-white/20 text-white rounded-md ring-0 border-none pl-4"
                   />
                 </div>
-                <Button
-                  variant="contained"
-                  className="mt-8 w-full bg-secondary text-white hover:bg-secondary/50 hover:text-white h-[45px] capitalize font-semibold text-xl"
-                >
-                  Send
-                </Button>
+              <Button
+                 onClick={sendMessage}
+                 variant="contained"
+                 disabled={loading} // disable button while sending
+                 className={`mt-8 w-full bg-secondary text-white hover:bg-secondary/50 hover:text-white h-[45px] capitalize font-semibold text-xl ${loading ? "cursor-not-allowed" : ""}`}
+               >
+                 {loading ? "Sending..." : "Send"}
+               </Button>
+               
               </div>
             </div>
           </div>
@@ -297,6 +348,8 @@ const Contact = () => {
           <Footer />
         </div>
       </div>
+
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

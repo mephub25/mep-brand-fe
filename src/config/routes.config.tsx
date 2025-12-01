@@ -10,21 +10,29 @@ import ProtectedRoute from "../components/ProtectedRoute";
 
 
 // admin dashboard 
-import Dashboard from '../pages/dashboard/admin/Dashboard';
-import CreateProjects from "../pages/dashboard/admin/createProject";
-import ViewProjects from "../pages/dashboard/admin/Projects";
-import EditProject from "../pages/dashboard/admin/editproject";
-import CreateActivity from "../pages/dashboard/admin/createActivity";
-import ActivityList from "../pages/dashboard/admin/activityList";
-import EditActivity from "../pages/dashboard/admin/edityActivity";
+import Dashboard from '../pages/admin/Dashboard';
+import CreateProjects from "../pages/admin/project/createProject";
+import ViewProjects from "../pages/admin/project/Projects";
+import EditProject from "../pages/admin/project/editproject";
+import ViewProjectDetails from "../pages/admin/project/ViewProjectDetails";
 
-import TeamList from "../pages/dashboard/team/TeamList";
-import CreateTeam from "../pages/dashboard/team/CreateTeam";
-import EditTeam from "../pages/dashboard/team/EditTeam";
+import CreateActivity from "../pages/admin/activity/createActivity";
+import ActivityList from "../pages/admin/activity/activityList";
+import EditActivity from "../pages/admin/activity/edityActivity";
 
-import TestimonialsList from "../pages/dashboard/admin/testimonial/TestimonialsList";
-import CreateTestimonial from "../pages/dashboard/admin/testimonial/CreateTestimonial";
-import EditTestimonial from "../pages/dashboard/admin/testimonial/EditTestimonial";
+import AdminLayout from "../components/admin/AdminLayout";
+import TeamList from "../pages/admin/team/TeamList";
+import CreateTeam from "../pages/admin/team/CreateTeam";
+import EditTeam from "../pages/admin/team/EditTeam";
+
+import TestimonialsList from "../pages/admin/testimonial/TestimonialsList";
+import CreateTestimonial from "../pages/admin/testimonial/CreateTestimonial";
+import EditTestimonial from "../pages/admin/testimonial/EditTestimonial";
+
+import CertificatesList from "../pages/admin/certificate/CertificateList";
+import AddCertificate from "../pages/admin/certificate/CertificateAdd";
+import EditCertificate from "../pages/admin/certificate/CertificateEdit";
+import Profile from '../pages/authontication/profilePage';
 
 
 const routes = createBrowserRouter([
@@ -54,114 +62,52 @@ const routes = createBrowserRouter([
   },
 
   // admin dashboard
+  
 
-  {
-  path: "/admin/dashboard",
+ {
+  path: "/admin",
   element: (
     <ProtectedRoute>
-      <Dashboard />
+      <AdminLayout />
     </ProtectedRoute>
   ),
-},
-{
-  path: "/admin/projects",
-  element: (
-    <ProtectedRoute>
-      <ViewProjects />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/admin/projects/create",
-  element: (
-    <ProtectedRoute>
-      <CreateProjects />
-    </ProtectedRoute>
-  ),
-},
-  {
-    path: "/admin/projects/edit/:id",
-    element: (
-      <ProtectedRoute>
-        <EditProject />
-      </ProtectedRoute>
-    ),
-  },
-{
-  path: "/admin/activity/create",
-  element: (
-    <ProtectedRoute>
-      <CreateActivity />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/admin/activities",
-  element: (
-    <ProtectedRoute>
-      <ActivityList />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/admin/activities/edit/:id",
-  element: (
-    <ProtectedRoute>
-      <EditActivity />
-    </ProtectedRoute>
-  ),
+  children: [
+     { index: true, element: <Dashboard /> }, 
+    { path: "dashboard", element: <Dashboard /> },
+
+    // Projects
+    { path: "projects", element: <ViewProjects /> },
+    { path: "projects/create", element: <CreateProjects /> },
+    { path: "projects/edit/:id", element: <EditProject /> },
+    { path: "projects/view/:id", element: <ViewProjectDetails /> },
+
+
+    // Activities
+    { path: "activities", element: <ActivityList /> },
+    { path: "activity/create", element: <CreateActivity /> },
+    { path: "activities/edit/:id", element: <EditActivity /> },
+
+    // Team
+    { path: "team", element: <TeamList /> },
+    { path: "team/create", element: <CreateTeam /> },
+    { path: "team/edit/:id", element: <EditTeam /> },
+
+    // Testimonials
+    { path: "testimonials", element: <TestimonialsList /> },
+    { path: "testimonials/create", element: <CreateTestimonial /> },
+    { path: "testimonials/edit/:id", element: <EditTestimonial /> },
+
+    // Certificate
+    { path: "certificates", element: <CertificatesList /> },
+    { path: "certificates/create", element: <AddCertificate /> },
+    { path: "certificates/edit/:id", element: <EditCertificate /> },
+
+
+    {
+     path: "profile",element: <Profile />,}
+  ]
 }
-,
-{
-  path: "/admin/team",
-  element: (
-    <ProtectedRoute>
-      <TeamList />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/admin/team/create",
-  element: (
-    <ProtectedRoute>
-      <CreateTeam />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/admin/team/edit/:id",
-  element: (
-    <ProtectedRoute>
-      <EditTeam />
-    </ProtectedRoute>
-  ),
-},
 
-
-{
-  path: "/admin/testimonials",
-  element: (
-    <ProtectedRoute>
-      <TestimonialsList />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/admin/testimonials/create",
-  element: (
-    <ProtectedRoute>
-      <CreateTestimonial />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/admin/testimonials/edit/:id",
-  element: (
-    <ProtectedRoute>
-      <EditTestimonial />
-    </ProtectedRoute>
-  ),
-},
 
 ]);
 

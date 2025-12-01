@@ -7,17 +7,18 @@ import Title from "../../../components/Title";
 gsap.registerPlugin(ScrollTrigger);
 
 const servicesDetails = [
-  {
-    title: "Electrical services",
-    detail:
-      "Our electrical expertise extends to the design and installation of various systems, from high-voltage transmission lines and substations to distribution networks. We specialize in lighting and power supply solutions, as well as renewable energy systems such as solar panels, hydropower plants, and wind farms. Additionally, our services include low voltage systems, including distribution networks and domestic installations.",
-    url: "/images/service-1.png",
-  },
+  
   {
     title: "Mechanical Services",
     detail:
       "We offer comprehensive mechanical services, including the design and installation of HVAC systems, such as air conditioning and ventilation units. Additionally, we specialize in providing and installing elevators, escalators, and fire suppression systems, ensuring safety and comfort in various environments.",
     url: "/images/service-2.png",
+  },
+  {
+    title: "Electrical services",
+    detail:
+      "Our electrical expertise extends to the design and installation of various systems, from high-voltage transmission lines and substations to distribution networks. We specialize in lighting and power supply solutions, as well as renewable energy systems such as solar panels, hydropower plants, and wind farms. Additionally, our services include low voltage systems, including distribution networks and domestic installations.",
+    url: "/images/service-1.png",
   },
   {
     title: "Plumbing services",

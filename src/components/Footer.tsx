@@ -14,7 +14,7 @@ import { scrollToSection } from "../utils/scroll.utils";
 export const mediaLinks = [
   {
     name: "X",
-    href: "https://x.com",
+    href: "https://x.com/MEPerictrictech?t=XFikwxcM8oRoNxgj151f1w&s=09",
     component: PiXLogoFill,
   },
   {

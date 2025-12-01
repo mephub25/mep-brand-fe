@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/v1/project"; // your nestjs prefix
+const API_URL = "http://localhost:3000/api/v1/project"; 
+const GALLERY_URL = "http://localhost:3000/api/v1/gallery"; // Gallery endpoints
 
 export const getAllProjects = async () => {
   const token = sessionStorage.getItem("token");
@@ -61,5 +62,33 @@ export const deleteProject = async (id: string) => {
     },
   });
 
+  return response.data;
+};
+
+// --- Gallery APIs ---
+const getToken = () => sessionStorage.getItem("token");
+
+// Upload multiple images to gallery
+// ---------- UPLOAD NEW GALLERY IMAGES ----------
+export const uploadGalleryImages = (formData: FormData, projectId: string) => {
+  const token = sessionStorage.getItem("token");
+
+  formData.append("projectId", projectId);
+
+  return axios.post(GALLERY_URL, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+
+// Delete a gallery image by ID
+export const removeGalleryImage = async (imageId: string) => {
+  const token = getToken();
+  const response = await axios.delete(`${GALLERY_URL}/${imageId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return response.data;
 };
