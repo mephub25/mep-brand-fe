@@ -65,6 +65,25 @@ export const deleteProject = async (id: string) => {
   return response.data;
 };
 
+// ---------- activity-------
+// Update project activities
+export const updateProjectActivities = async (projectId: string, activities: string[]) => {
+  const token = sessionStorage.getItem("token");
+
+  const response = await axios.put(
+    `${API_URL}/${projectId}/activities`,
+    { activities }, // must be wrapped in an object
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+
 // --- Gallery APIs ---
 const getToken = () => sessionStorage.getItem("token");
 

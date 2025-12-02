@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -7,7 +5,14 @@ import {
   updateProject,
   uploadGalleryImages,
   removeGalleryImage,
+
+  updateProjectActivities,
 } from "../../../api/projectApi";
+import {
+  
+  getAllActivities,
+
+} from "../../../api/activityApi";
 import { useToast } from "../../../context/ToastContext";
 
 const EditProject = () => {
@@ -33,8 +38,12 @@ const EditProject = () => {
   const [gallery, setGallery] = useState<any[]>([]);
   const [newGalleryFiles, setNewGalleryFiles] = useState<File[]>([]);
 
+  const [activities, setActivities] = useState<any[]>([]);
+  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+
   useEffect(() => {
     loadProject();
+    loadActivities();
   }, [id]);
 
   const loadProject = async () => {
@@ -53,11 +62,22 @@ const EditProject = () => {
 
       setImagePreview(project.image || null);
       setGallery(project.gallery || []);
+      setSelectedActivities(project.activities?.map((a: any) => a._id) || []);
     } catch (error) {
       console.error("Failed to load project:", error);
       addToast("Failed to load project", "error");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadActivities = async () => {
+    try {
+      const res = await getAllActivities();
+      setActivities(res);
+    } catch (error) {
+      console.error(error);
+      addToast("Failed to load activities", "error");
     }
   };
 
@@ -120,6 +140,14 @@ const EditProject = () => {
     }
   };
 
+  const handleActivityChange = (activityId: string) => {
+    setSelectedActivities((prev) =>
+      prev.includes(activityId)
+        ? prev.filter((id) => id !== activityId)
+        : [...prev, activityId]
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -140,8 +168,12 @@ const EditProject = () => {
         await uploadGalleryImages(galleryFd, id!);
       }
 
+      // Update activities
+      await updateProjectActivities(id!, selectedActivities);
+
+
       addToast("Project updated successfully", "success");
-      navigate("/admin/projects");
+      // navigate("/admin/projects");
     } catch (error: any) {
       console.error(error);
       addToast(
@@ -302,6 +334,23 @@ const EditProject = () => {
                   )}
                 </div>
               </div>
+            </div>
+          </div>
+      
+          {/* Activities */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Activities</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              {activities.map((activity) => (
+                <label key={activity._id} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedActivities.includes(activity._id)}
+                    onChange={() => handleActivityChange(activity._id)}
+                  />
+                  <span>{activity.name}</span>
+                </label>
+              ))}
             </div>
           </div>
 
