@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/v1/activity";
+const API_URL = `${import.meta.env.VITE_API_URL}/activity`;
+
 
 
 // Fetch all activities

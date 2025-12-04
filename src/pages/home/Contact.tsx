@@ -38,7 +38,7 @@ const Contact = () => {
 const sendMessage = async () => {
   setLoading(true);
   try {
-    await axios.post("http://localhost:3000/api/v1/contact", form);
+    await axios.post("http://be.meperictrictech.com/api/v1/contact", form);
     toast.success("Message sent successfully!");
     setForm({ name: "", email: "", subject: "", message: "" });
   } catch (err) {
