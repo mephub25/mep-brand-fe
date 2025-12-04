@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/v1/activity";
+const API_URL = "https://be.meperictrictech.com/api/v1/activity";
 
 
 // Fetch all activities

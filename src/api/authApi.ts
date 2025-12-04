@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/v1/auth';
+const API_URL = 'https://be.meperictrictech.com/api/v1/auth';
 
 // ---------- LOGIN ----------
 export const login = async (username: string, password: string) => {

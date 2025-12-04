@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/v1/certificate";
+const API_URL = "https://be.meperictrictech.com/api/v1/certificate";
 
 export const createCertificate = async (formData: FormData) => {
   const token = sessionStorage.getItem("token");
