@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllProjects, deleteProject } from "../../../api/projectApi";
 
 const ViewProjects = () => {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,11 +41,56 @@ const ViewProjects = () => {
     }
   };
 
+  // Filter and search logic
+  const filteredProjects = useMemo(() => {
+    let result = [...projects];
+
+    // Apply search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(
+        (project) =>
+          project.name?.toLowerCase().includes(query) ||
+          project.location?.toLowerCase().includes(query) ||
+          project.projectOwner?.toLowerCase().includes(query) ||
+          project.description?.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply status filter
+    if (statusFilter !== "all") {
+      result = result.filter((project) => project.status === statusFilter);
+    }
+
+    // Apply sorting
+    result.sort((a, b) => {
+      switch (sortBy) {
+        case "newest":
+          return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+        case "oldest":
+          return new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime();
+        case "name-asc":
+          return (a.name || "").localeCompare(b.name || "");
+        case "name-desc":
+          return (b.name || "").localeCompare(a.name || "");
+        default:
+          return 0;
+      }
+    });
+
+    return result;
+  }, [projects, searchQuery, statusFilter, sortBy]);
+
   // Pagination calculations
-  const totalPages = Math.ceil(projects.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProjects = projects.slice(indexOfFirstItem, indexOfLastItem);
+  const currentProjects = filteredProjects.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter, sortBy, itemsPerPage]);
 
   // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -125,7 +173,6 @@ const ViewProjects = () => {
                   value={itemsPerPage}
                   onChange={(e) => {
                     setItemsPerPage(Number(e.target.value));
-                    setCurrentPage(1);
                   }}
                   className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-20"
                 >
@@ -148,26 +195,156 @@ const ViewProjects = () => {
           </div>
         </div>
 
+        {/* Search and Filter Bar */}
+        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 mb-6 shadow-sm border border-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Search Input */}
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Search Projects
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search by name, location, owner..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 border bg-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    <svg className="h-5 w-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Status Filter */}
+            {/* <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Status
+              </label>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="w-full border bg-white border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="on-hold">On Hold</option>
+              </select>
+            </div> */}
+
+            {/* Sort By */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Sort By
+              </label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full border bg-white border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Filter Summary */}
+          {(searchQuery || statusFilter !== "all") && (
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="text-sm text-gray-600">Active filters:</span>
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                  Search: "{searchQuery}"
+                  <button onClick={() => setSearchQuery("")} className="hover:text-blue-900">
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+              {statusFilter !== "all" && (
+                <span className="inline-flex items-center gap-1 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                  Status: {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
+                  <button onClick={() => setStatusFilter("all")} className="hover:text-green-900">
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setStatusFilter("all");
+                  setSortBy("newest");
+                }}
+                className="text-sm text-gray-600 hover:text-gray-900 underline"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
+        </div>
+
         {/* Projects Count */}
-        {projects.length > 0 && (
+        {filteredProjects.length > 0 && (
           <div className="mb-4 sm:mb-6">
             <p className="text-gray-600 text-sm sm:text-base">
-              Showing <span className="font-semibold">{indexOfFirstItem + 1}-{Math.min(indexOfLastItem, projects.length)}</span> of{" "}
-              <span className="font-semibold">{projects.length}</span> projects
+              Showing <span className="font-semibold">{indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredProjects.length)}</span> of{" "}
+              <span className="font-semibold">{filteredProjects.length}</span> projects
+              {filteredProjects.length !== projects.length && (
+                <span className="text-gray-500 ml-2">
+                  (filtered from {projects.length} total)
+                </span>
+              )}
             </p>
           </div>
         )}
 
         {/* Projects Grid */}
-        {projects.length === 0 ? (
+        {filteredProjects.length === 0 ? (
           <div className="text-center py-12 sm:py-16 bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-200">
             <svg className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-3 sm:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">No projects found</h3>
-            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Get started by creating your first project</p>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+              {searchQuery || statusFilter !== "all" ? "No matching projects found" : "No projects found"}
+            </h3>
+            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">
+              {searchQuery || statusFilter !== "all"
+                ? "Try adjusting your search or filter criteria"
+                : "Get started by creating your first project"}
+            </p>
+            {(searchQuery || statusFilter !== "all") && (
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setStatusFilter("all");
+                }}
+                className="bg-gray-600 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-200 text-sm sm:text-base mb-3"
+              >
+                Clear Filters
+              </button>
+            )}
             <button
-              className="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 text-sm sm:text-base"
+              className="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 text-sm sm:text-base ml-2"
               onClick={() => navigate("/admin/projects/create")}
             >
               Create Project
@@ -189,8 +366,14 @@ const ViewProjects = () => {
                       className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-2 sm:top-4 right-2 sm:right-4">
-                      <span className="bg-green-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium shadow-lg">
-                        Active
+                      <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium shadow-lg ${
+                        project.status === 'active' ? 'bg-green-500 text-white' :
+                        project.status === 'pending' ? 'bg-yellow-500 text-white' :
+                        project.status === 'completed' ? 'bg-blue-500 text-white' :
+                        project.status === 'on-hold' ? 'bg-gray-500 text-white' :
+                        'bg-green-500 text-white'
+                      }`}>
+                        {project.status ? project.status.charAt(0).toUpperCase() + project.status.slice(1) : 'Active'}
                       </span>
                     </div>
                   </div>
@@ -212,6 +395,16 @@ const ViewProjects = () => {
                         </svg>
                         <span className="text-xs sm:text-sm truncate">Owner: {project.projectOwner}</span>
                       </div>
+                      {project.createdAt && (
+                        <div className="flex items-center gap-2 text-gray-600">
+                          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span className="text-xs sm:text-sm truncate">
+                            Created: {new Date(project.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Action Buttons */}
@@ -231,7 +424,7 @@ const ViewProjects = () => {
                         onClick={() => navigate(`/admin/projects/edit/${project._id}`)}
                       >
                         <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2v-5m1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                         Edit
                       </button>
@@ -316,7 +509,7 @@ const ViewProjects = () => {
 
                 {/* Items per page info */}
                 <div className="text-sm text-gray-600 order-3 text-center sm:text-left">
-                  {itemsPerPage === projects.length ? "Showing all projects" : `${itemsPerPage} per page`}
+                  {itemsPerPage === filteredProjects.length ? "Showing all projects" : `${itemsPerPage} per page`}
                 </div>
               </div>
             )}

@@ -34,8 +34,16 @@ const token = sessionStorage.getItem("token");
 
 
 export const deleteActivity = async (id: string) => {
-    const token = sessionStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
+  if (!token) throw new Error("User not authenticated");
+
+  const response = await axios.delete(`${API_URL}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return response.data; // usually backend returns success message or deleted object
 };
+
 
 export const updateActivity = async (id: string, formData: FormData) => {
   const token = sessionStorage.getItem("token"); // <-- read here

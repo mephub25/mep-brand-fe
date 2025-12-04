@@ -189,18 +189,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             {navItems.map((item, index) => (
               <div key={index}>
                 {/* Single Link Item */}
-                {'href' in item && (
-                  <Link
-                    to={item.href}
-                    onClick={onClose}
+             {'href' in item && item.href && (
+                <Link
+                  to={item.href as string}
+                  onClick={onClose}
                     className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group ${
-                      isActiveLink(item.href)
+                      isActiveLink(item.href ?? "")
+
                         ? "bg-blue-600 shadow-lg shadow-blue-500/25 text-white"
                         : "text-gray-300 hover:bg-gray-750 hover:text-white hover:shadow-md"
                     }`}
                   >
                     <div className={`transition-transform duration-200 group-hover:scale-110 ${
-                      isActiveLink(item.href) ? "text-white" : "text-gray-400"
+                      isActiveLink(item.href ?? "") ? "text-white" : "text-gray-400"
+
                     }`}>
                       {item.icon}
                     </div>
@@ -215,7 +217,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                       {item.category}
                     </div>
                     <div className="space-y-1">
-                      {item.items.map((subItem, subIndex) => (
+                       {item.items?.map((subItem, subIndex) => ( // use ?.map
                         <Link
                           key={subIndex}
                           to={subItem.href}
