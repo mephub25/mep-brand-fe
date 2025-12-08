@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { createProject } from "../../../api/projectApi";
 import { getAllActivities } from "../../../api/activityApi";
+import { useToast } from "../../../context/ToastContext";
+
 
 interface ActivityOption {
   _id: string;
@@ -15,6 +17,8 @@ export default function CreateProject() {
   const navigate = useNavigate();
 
   // Project form state
+  const { addToast } = useToast();
+
   const [name, setName] = useState("");
   const [projectOwner, setProjectOwner] = useState("");
   const [projectOwnerContact, setProjectOwnerContact] = useState("");
@@ -126,10 +130,38 @@ export default function CreateProject() {
 
     try {
       await createProject(formData);
-      navigate("/admin/projects");
+
+      
+    
+    // Show toast
+    addToast("Project created successfully!", "success");
+
+    // Reset fields
+    setName("");
+    setProjectOwner("");
+    setProjectOwnerContact("");
+    setStartDate("");
+    setEndDate("");
+    setLocation("");
+    setImage(null);
+    setGallery([]);
+    setSelectedActivities([]);
+
+    // Clear previews
+    setImagePreview(null);
+    setGalleryPreviews([]);
+
+    // // Optional: navigate after 1 second
+    // setTimeout(() => {
+    //   navigate("/admin/projects");
+    // }, 1000);
+
     } catch (error: any) {
       console.error("Create project error:", error.response?.data || error.message);
-      alert("Failed to create project. Please try again.");
+       addToast(
+      error.response?.data?.message || "Failed to create project. Please try again.",
+      "error"
+    );
     } finally {
       setLoading(false);
     }

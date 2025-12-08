@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { IoClose, IoEye, IoEyeOff } from "react-icons/io5";
 import { gsap } from "gsap";
 import { useNavigate } from "react-router-dom";
+import ForgotPasswordModal from "./ForgotPasswordModal";
+
 
 interface Props {
   isOpen: boolean;
@@ -14,6 +16,8 @@ const LoginOverlay = ({ isOpen, onClose }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [visible, setVisible] = useState(isOpen);
   const [loading, setLoading] = useState(false);
+  const [showForgotModal, setShowForgotModal] = useState(false);
+
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -48,7 +52,7 @@ const LoginOverlay = ({ isOpen, onClose }: Props) => {
     setError("");
 
     try {
-      const res = await fetch("https://be.meperictrictech.com/api/v1/auth/login", {
+      const res = await fetch("http://localhost:3000/api/v1/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: email, password }),
@@ -86,7 +90,7 @@ const LoginOverlay = ({ isOpen, onClose }: Props) => {
 
   return (
     <div
-      className="fixed inset-0 z-[2000] bg-black/10 backdrop-blur-md flex items-center justify-center p-4"
+      className="fixed inset-0 z-[2000] bg-black/1 backdrop-blur-md flex items-center justify-center p-4"
       onClick={onClose}
     >
       <div
@@ -181,12 +185,16 @@ const LoginOverlay = ({ isOpen, onClose }: Props) => {
               {/* Forgot password */}
               <div className="flex justify-end">
                 <a 
-                  href="#" 
-                  className="text-sm text-blue-600 hover:text-blue-700 transition-colors duration-200 font-medium"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  Forgot Password?
-                </a>
+                   href="#" 
+                   className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                   onClick={(e) => {
+                     e.preventDefault();
+                     setShowForgotModal(true);  // <-- ADD THIS
+                   }}
+                 >
+                   Forgot Password?
+                 </a>
+                 
               </div>
 
               {/* Submit button */}
@@ -219,7 +227,15 @@ const LoginOverlay = ({ isOpen, onClose }: Props) => {
           </div>
         </div>
       </div>
+      {/* closes login main overlay */}
+    {/* Forgot Password Modal (must be OUTSIDE the login overlay) */}
+    {showForgotModal && (
+      <ForgotPasswordModal onClose={() => setShowForgotModal(false)} />
+    )}
+
+
     </div>
+    
   );
 };
 

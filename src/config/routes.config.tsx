@@ -6,8 +6,6 @@ import ProjectsPage from "../pages/home/ProjectsPage";
 import About from "../pages/about/About";
 import ProtectedRoute from "../components/ProtectedRoute";
 
-// Example
-
 
 // admin dashboard 
 import Dashboard from '../pages/admin/Dashboard';
@@ -34,6 +32,12 @@ import AddCertificate from "../pages/admin/certificate/CertificateAdd";
 import EditCertificate from "../pages/admin/certificate/CertificateEdit";
 import Profile from '../pages/authontication/profilePage';
 
+import GalleryList from "../pages/admin/companyGallery/GalleryList";
+import CreateGallery from "../pages/admin/companyGallery/CreateGallery";
+import EditGallery from "../pages/admin/companyGallery/EditGallery";
+
+import ResetPassword from "../pages/authontication/ResetPassword";
+
 
 const routes = createBrowserRouter([
   {
@@ -59,6 +63,10 @@ const routes = createBrowserRouter([
   {
     path: "*",
     element: <Navigate to="/" replace />,
+  },
+
+  { path:"/reset-password",
+    element: <ResetPassword /> 
   },
 
   // admin dashboard
@@ -101,7 +109,10 @@ const routes = createBrowserRouter([
     { path: "certificates", element: <CertificatesList /> },
     { path: "certificates/create", element: <AddCertificate /> },
     { path: "certificates/edit/:id", element: <EditCertificate /> },
-
+     
+    { path: "photos", element: <GalleryList /> },
+    { path: "photo/create", element: <CreateGallery /> },
+    { path: "photo/edit/:id", element: <EditGallery /> },
 
     {
      path: "profile",element: <Profile />,}

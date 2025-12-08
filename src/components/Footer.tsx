@@ -18,11 +18,6 @@ export const mediaLinks = [
     component: PiXLogoFill,
   },
   {
-    name: "LinkedIn",
-    href: "https://linkedin.com",
-    component: FaLinkedinIn,
-  },
-  {
     name: "Instagram",
     href: "https://www.instagram.com/meperictrictechnologyltd/?igsh=aGc1NHUwNXFwbnU3",
     component: FaInstagram,
@@ -34,7 +29,7 @@ export const mediaLinks = [
   },
   {
     name: "Youtube",
-    href: "https://youtube.com",
+    href: "https://www.youtube.com/@MepErictric",
     component: FaYoutube,
   },
 ];
