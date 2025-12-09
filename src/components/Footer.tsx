@@ -5,7 +5,7 @@ import { HiOutlineMapPin } from "react-icons/hi2";
 import { HiOutlineMail } from "react-icons/hi";
 import { FiPhone } from "react-icons/fi";
 import { PiXLogoFill } from "react-icons/pi";
-import { FaLinkedinIn } from "react-icons/fa6";
+
 import { FaInstagram } from "react-icons/fa";
 import { ImFacebook } from "react-icons/im";
 import { FaYoutube } from "react-icons/fa";

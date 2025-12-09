@@ -22,11 +22,13 @@ const CreateGallery: React.FC = () => {
 
     try {
       const res = await axios.post("http://localhost:3000/api/v1/gallery", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+  headers: {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "multipart/form-data",
+  },
+});
+
+console.log("Created:", res.data);
       alert("Gallery item created successfully!");
       navigate("/admin/gallery"); // redirect to gallery list page
     } catch (err: any) {
