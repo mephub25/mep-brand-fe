@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import { Admin } from "../../types/Admin";
@@ -9,7 +9,27 @@ const AdminLayout: React.FC = () => {
   const adminData = sessionStorage.getItem("admin");
 
   let admin: Admin | null = null;
+  // 🔥 AUTH + BACK BUTTON FIX
+  // ===========================
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
 
+    // Prevent cached page from showing after logout
+    window.history.replaceState(null, "", window.location.href);
+
+    // Firefox back-button fix
+    window.onpageshow = function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+
+    // Redirect if no token
+    if (!token) {
+      window.location.href = "/admin/login";
+    }
+  }, []);
+  // ===========================
   // Safely parse admin
   try {
     if (adminData && adminData !== "undefined" && adminData !== "null") {
