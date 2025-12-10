@@ -7,6 +7,8 @@ import testimonialSlice from "./slices/testimonial.slice";
 import memberSlice from "./slices/member.slice";
 import certificateSlice from "./slices/certificate.slice";
 
+import companyGalleryReducer from "./slices/companyGallery.slice";
+
 const logger = createLogger({
   collapsed: true,
   timestamp: true,
@@ -21,6 +23,7 @@ export const store = configureStore({
     gallery: gallerySlice.reducer,
     member: memberSlice.reducer,
     certificate: certificateSlice.reducer,
+    companyGallery: companyGalleryReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

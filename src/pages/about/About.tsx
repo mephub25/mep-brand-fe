@@ -16,6 +16,11 @@ import {
   getAllCertificates,
   selectAllCertificates,
 } from "../../store/slices/certificate.slice";
+// ADD THIS ⬇️
+import {
+  getAllCompanyGallery,
+  selectCompanyGallery,
+} from "../../store/slices/companyGallery.slice";
 import Footer from "../../components/Footer";
 import { GoDotFill } from "react-icons/go";
 import { gsap } from "gsap";
@@ -88,6 +93,15 @@ const About = () => {
   const backRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
+  const companyGallery = useSelector(selectCompanyGallery);
+  interface CompanyGalleryItem {
+  _id: string;
+  title: string;
+  description?: string;
+  images: string[];
+}
+
+
   useEffect(() => {
     dispatch(getAllMembers({ skip: 0, limit: 10 })).then(() => {
       setLoading(false);
@@ -96,6 +110,8 @@ const About = () => {
     dispatch(getAllCertificates({ skip: 0, limit: 10 })).then(() => {
       setCertificatesLoading(false);
     });
+    
+    dispatch(getAllCompanyGallery());
   }, [dispatch]);
 
   useLayoutEffect(() => {
@@ -471,6 +487,13 @@ const About = () => {
               >
                 <GoDotFill /> Certificates
               </span>
+              <span
+                onClick={() => scrollToSection("companyGallery")}
+                className="flex items-center gap-2 cursor-pointer hover:text-secondary"
+              >
+                <GoDotFill /> Company Gallery
+              </span>
+              
             </div>
           </div>
         </div>
@@ -668,6 +691,32 @@ const About = () => {
             )}
           </div>
         )}
+       {companyGallery?.length > 0 && (
+              <div id="companyGallery" className="flex flex-col items-center py-12 bg-white">
+                <Title title="COMPANY GALLERY" className="text-center mb-8" />
+            
+                <div className="lg:columns-3 sm:columns-2 columns-1 gap-4 p-10">
+                  {companyGallery.map((gallery: CompanyGalleryItem) => (
+                    <div
+                      key={gallery._id}
+                      className="break-inside-avoid shadow-[0_3px_10px_rgb(0,0,0,0.2)] mb-4 rounded-lg overflow-hidden"
+                    >
+                      <img
+                        src={gallery.images[0]} // first image in the gallery
+                        alt={gallery.title}
+                        className="w-full h-auto object-cover bg-gray-300/50"
+                      />
+                      <div className="p-4 bg-white">
+                        <h3 className="font-bold text-lg">{gallery.title}</h3>
+                        <p className="text-sm text-gray-600">{gallery.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+        
       </div>
       <Footer />
     </div>
