@@ -1,7 +1,11 @@
 import "./style/About.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import { Button,} from "@mui/material";
 import Slider, { Settings } from "react-slick";
+import { Link } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import BackButton from "../../components/BackButton";
 import Title from "../../components/Title";
@@ -18,7 +22,7 @@ import {
 } from "../../store/slices/certificate.slice";
 // ADD THIS ⬇️
 import {
-  getAllCompanyGallery,
+  getCompanyGallery,
   selectCompanyGallery,
 } from "../../store/slices/companyGallery.slice";
 import Footer from "../../components/Footer";
@@ -82,6 +86,7 @@ const About = () => {
   const paragraphRef = useRef<HTMLParagraphElement | null>(null);
   const imagesRef = useRef<any>([]);
   const teamRef = useRef<HTMLDivElement[]>([]);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const certificateRef = useRef<any>([]);
   const pageHeaderRef = useRef<HTMLDivElement | null>(null);
   const subHeaderRef = useRef<HTMLParagraphElement | null>(null);
@@ -93,13 +98,19 @@ const About = () => {
   const backRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
-  const companyGallery = useSelector(selectCompanyGallery);
-  interface CompanyGalleryItem {
-  _id: string;
-  title: string;
-  description?: string;
-  images: string[];
-}
+ 
+   const companyGallery = useSelector(selectCompanyGallery);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+    interface CompanyGalleryItem {
+    _id: string;
+    title: string;
+    description?: string;
+    images: string[];
+  }
 
 
   useEffect(() => {
@@ -111,8 +122,10 @@ const About = () => {
       setCertificatesLoading(false);
     });
     
-    dispatch(getAllCompanyGallery());
-  }, [dispatch]);
+   dispatch(getCompanyGallery({ page: currentPage, }));
+}, [dispatch, currentPage]);
+
+
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -691,31 +704,56 @@ const About = () => {
             )}
           </div>
         )}
-       {companyGallery?.length > 0 && (
-              <div id="companyGallery" className="flex flex-col items-center py-12 bg-white">
-                <Title title="COMPANY GALLERY" className="text-center mb-8" />
-            
-                <div className="lg:columns-3 sm:columns-2 columns-1 gap-4 p-10">
-                  {companyGallery.map((gallery: CompanyGalleryItem) => (
-                    <div
-                      key={gallery._id}
-                      className="break-inside-avoid shadow-[0_3px_10px_rgb(0,0,0,0.2)] mb-4 rounded-lg overflow-hidden"
-                    >
-                      <img
-                        src={gallery.images[0]} // first image in the gallery
-                        alt={gallery.title}
-                        className="w-full h-auto object-cover bg-gray-300/50"
-                      />
-                      <div className="p-4 bg-white">
-                        <h3 className="font-bold text-lg">{gallery.title}</h3>
-                        <p className="text-sm text-gray-600">{gallery.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            
+   {companyGallery?.length > 0 && (
+  <div className="flex flex-col items-center py-12 bg-white">
+    <Title title="COMPANY GALLERY" className="text-center mb-8" />
+
+    <div className="lg:columns-3 sm:columns-2 columns-1 gap-4 p-10">
+      {companyGallery.slice(0, 6).map((galleryItem, index) => (
+        <div
+          key={galleryItem._id}
+          className="break-inside-avoid shadow-[0_3px_10px_rgb(0,0,0,0.2)] mb-4 rounded-lg overflow-hidden cursor-pointer"
+          onClick={() => {
+            setCurrentIndex(index);
+            setLightboxOpen(true);
+          }}
+        >
+          <img
+            src={galleryItem.images[0]}
+            alt={galleryItem.title}
+            className="w-full h-auto object-cover bg-gray-300/50"
+          />
+          <div className="p-4 bg-white">
+            <h3 className="font-bold text-lg">{galleryItem.title}</h3>
+            <p className="text-sm text-gray-600">{galleryItem.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+          <Link to="/company-gallery">
+            <Button
+              ref={buttonRef}
+              variant="contained"
+              color="secondary"
+              className="capitalize text-base w-fit px-10 font-normal"
+            >
+              View All
+            </Button>
+          </Link>
+
+    {lightboxOpen && (
+      <Lightbox
+        open={lightboxOpen}
+        close={() => setLightboxOpen(false)}
+        slides={companyGallery.map((g) => ({ src: g.images[0] }))}
+        index={currentIndex}
+        animation={{ fade: 250 }}
+      />
+    )}
+  </div>
+)}
+
         
       </div>
       <Footer />

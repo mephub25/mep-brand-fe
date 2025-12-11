@@ -5,6 +5,8 @@ import ProjectPage from "../pages/home/ProjectPage";
 import ProjectsPage from "../pages/home/ProjectsPage";
 import About from "../pages/about/About";
 import ProtectedRoute from "../components/ProtectedRoute";
+import CompanyGalleryPage from "../pages/about/CompanyGallery";
+
 
 
 // admin dashboard 
@@ -60,6 +62,11 @@ const routes = createBrowserRouter([
     path: "/about",
     element: <About />,
   },
+  {
+  path: "/company-gallery",
+  element: <CompanyGalleryPage />,
+},
+
   {
     path: "*",
     element: <Navigate to="/" replace />,

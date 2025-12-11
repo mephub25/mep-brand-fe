@@ -120,7 +120,7 @@ const CreateGallery: React.FC = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full px-4 py-3 border bg-white border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter gallery title"
-                required
+                
                 maxLength={100}
               />
               <p className="text-xs text-gray-500 mt-1">
