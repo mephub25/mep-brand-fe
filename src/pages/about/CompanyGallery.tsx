@@ -13,6 +13,9 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 
+import "./style/About.css";
+
+
 import {
   getCompanyGallery,
   selectCompanyGallery,
@@ -344,11 +347,17 @@ const CompanyGalleryPage = () => {
             buttonPrev: gallery.length > 1 ? undefined : () => null,
             buttonNext: gallery.length > 1 ? undefined : () => null,
           }}
-          on={{
-            view: (index) => setCurrentIndex(index),
-          }}
-         styles={{
-  container: { backgroundColor: 'rgba(0, 0, 0, 0.92)', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+         on={{
+    view: (index) => {
+    gsap.fromTo(
+      '.yarl__slide_image',
+      { opacity: 0, scale: 2 },
+      { opacity: 1, scale: 1, duration: 2, ease: "power2.out" }
+    );
+  }
+}}
+       styles={{
+  container: { backgroundColor: 'rgba(0, 0, 0, 1)', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   slide: { padding: '20px 0' }
 }}
 

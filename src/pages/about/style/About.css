@@ -50,3 +50,13 @@
     }
   }
 }
+/* Soft dim lightbox background */
+.yarl__backdrop {
+  background: rgba(0, 0, 0, 1) !important;  /* Change opacity here */
+  backdrop-filter: blur(4px);                 /* Optional: smooth blur */
+}
+
+/* Optional subtle vignette effect */
+.yarl__container {
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.3);
+}

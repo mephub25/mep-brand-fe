@@ -30,6 +30,7 @@ import { GoDotFill } from "react-icons/go";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TopBar from "../../components/TopBar";
+import "./style/About.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,10 +71,7 @@ const images = [
     src: "/gallery/image9.jpg",
     alt: "image9",
   },
-  // {
-  //   src: "/gallery/image10.jpg",
-  //   alt: "image10",
-  // },
+
 ];
 
 const About = () => {
@@ -97,6 +95,9 @@ const About = () => {
   const visionRef = useRef<HTMLDivElement | null>(null);
   const backRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+ // Add these refs to your existing ref declarations
+const companyGalleryRef = useRef<HTMLDivElement>(null);
+const galleryItemRefs = useRef<any>([]);
 
  
    const companyGallery = useSelector(selectCompanyGallery);
@@ -180,6 +181,7 @@ const About = () => {
           },
         }
       );
+   
 
       ScrollTrigger.create({
         animation: gsap.fromTo(
@@ -419,7 +421,116 @@ const About = () => {
         toggleActions: "play none none none",
         scrub: true,
       });
+
+       // Company Gallery Title Animation
+    gsap.fromTo(
+      companyGalleryRef.current?.querySelector('.gallery-title') || companyGalleryRef.current,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        scrollTrigger: {
+          trigger: companyGalleryRef.current,
+          start: "top 80%",
+          end: "top 20%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+
+    // Company Gallery Images Animation
+    if (galleryItemRefs.current.length > 0) {
+      galleryItemRefs.current.forEach((ref: any, index: number) => {
+        if (ref) {
+          gsap.fromTo(
+            ref,
+            {
+              opacity: 0,
+              y: 50,
+              scale: 0.8,
+              rotation: -5,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotation: 0,
+              duration: 0.8,
+              delay: index * 0.1,
+              ease: "back.out(1.7)",
+              scrollTrigger: {
+                trigger: ref,
+                start: "top 90%",
+                end: "top 50%",
+                toggleActions: "play none none none",
+              },
+            }
+          );
+        }
+      });
+    }
+
+    // "View All" Button Animation
+    gsap.fromTo(
+      buttonRef.current,
+      {
+        opacity: 0,
+        y: 30,
+        scale: 0.9,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        delay: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: buttonRef.current,
+          start: "top 90%",
+          end: "top 60%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+
+    // Hover effect for gallery items
+    galleryItemRefs.current.forEach((ref: any) => {
+      if (ref) {
+        gsap.to(ref, {
+          scale: 1.05,
+          duration: 0.3,
+          ease: "power2.out",
+          paused: true,
+          onComplete: () => {
+            gsap.to(ref, {
+              boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+              duration: 0.3,
+            });
+          }
+        });
+
+        ref.addEventListener('mouseenter', () => {
+          gsap.to(ref, { scale: 1.05, duration: 0.3 });
+          gsap.to(ref, { 
+            boxShadow: "0 15px 40px rgba(0,0,0,0.4)",
+            duration: 0.3 
+          });
+        });
+
+        ref.addEventListener('mouseleave', () => {
+          gsap.to(ref, { scale: 1, duration: 0.3 });
+          gsap.to(ref, { 
+            boxShadow: "0 3px 10px rgba(0,0,0,0.2)",
+            duration: 0.3 
+          });
+        });
+      }
     });
+  });
+
+    
 
     return () => ctx.clear();
   }, []);
@@ -501,7 +612,7 @@ const About = () => {
                 <GoDotFill /> Certificates
               </span>
               <span
-                onClick={() => scrollToSection("companyGallery")}
+                onClick={() => scrollToSection("company-gallery")}
                 className="flex items-center gap-2 cursor-pointer hover:text-secondary"
               >
                 <GoDotFill /> Company Gallery
@@ -704,57 +815,91 @@ const About = () => {
             )}
           </div>
         )}
-   {companyGallery?.length > 0 && (
-  <div className="flex flex-col items-center py-12 bg-white">
-    <Title title="COMPANY GALLERY" className="text-center mb-8" />
+{companyGallery?.length > 0 && (
+  <div 
+    id="company-gallery" // Add this ID for navigation
+    ref={companyGalleryRef}
+    className="flex flex-col items-center py-12 bg-white"
+  >
+    <Title 
+      title="COMPANY GALLERY" 
+      className="text-center mb-8 gallery-title" // Added class for targeting
+    />
 
-    <div className="lg:columns-3 sm:columns-2 columns-1 gap-4 p-10">
+    <div className="lg:columns-3 sm:columns-2 columns-1 gap-8 p-10">
       {companyGallery.slice(0, 6).map((galleryItem, index) => (
         <div
           key={galleryItem._id}
-          className="break-inside-avoid shadow-[0_3px_10px_rgb(0,0,0,0.2)] mb-4 rounded-lg overflow-hidden cursor-pointer"
+          ref={(el) => (galleryItemRefs.current[index] = el)}
+          className="break-inside-avoid shadow-[0_3px_10px_rgb(0,0,0,0.9)] mb-8 rounded-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 gallery-item"
           onClick={() => {
             setCurrentIndex(index);
             setLightboxOpen(true);
           }}
+          onMouseEnter={(e) => {
+            gsap.to(e.currentTarget, { scale: 1.05, duration: 0.3 });
+          }}
+          onMouseLeave={(e) => {
+            gsap.to(e.currentTarget, { scale: 1, duration: 0.3 });
+          }}
         >
-          <img
-            src={galleryItem.images[0]}
-            alt={galleryItem.title}
-            className="w-full h-auto object-cover bg-gray-300/50"
-          />
-          <div className="p-4 bg-white">
-            <h3 className="font-bold text-lg">{galleryItem.title}</h3>
-            <p className="text-sm text-gray-600">{galleryItem.description}</p>
+          <div className="overflow-hidden">
+            <img
+              src={galleryItem.images[0]}
+              alt={galleryItem.title}
+              className="w-full h-auto object-cover bg-gray-300/50 transform transition-transform duration-500 hover:scale-110"
+            />
           </div>
+       
         </div>
       ))}
     </div>
 
-          <Link to="/company-gallery">
-            <Button
-              ref={buttonRef}
-              variant="contained"
-              color="secondary"
-              className="capitalize text-base w-fit px-10 font-normal"
-            >
-              View All
-            </Button>
-          </Link>
+    <Link to="/company-gallery">
+      <Button
+        ref={buttonRef}
+        variant="contained"
+        color="secondary"
+        className="capitalize text-base w-fit px-10 font-normal transform hover:scale-105 transition-transform duration-300"
+        sx={{
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-3px)',
+            boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
+          }
+        }}
+      >
+        View All
+      </Button>
+    </Link>
 
     {lightboxOpen && (
       <Lightbox
         open={lightboxOpen}
         close={() => setLightboxOpen(false)}
-        slides={companyGallery.map((g) => ({ src: g.images[0] }))}
+        slides={companyGallery.map((g) => ({ 
+          src: g.images[0],
+          alt: g.title || 'Gallery Image'
+        }))}
         index={currentIndex}
-        animation={{ fade: 250 }}
+        animation={{ fade: 500, swipe: 300 }}
+        carousel={{
+          finite: companyGallery.length <= 1,
+        }}
+        on={{
+          view: (index) => {
+            // Optional: Add animation when switching slides
+            gsap.fromTo(
+              '.yarl__slide_image',
+              { opacity: 0, scale: 2 },
+              { opacity: 1, scale: 1, duration: 2 }
+            );
+          }
+        }}
       />
     )}
   </div>
 )}
-
-        
       </div>
       <Footer />
     </div>

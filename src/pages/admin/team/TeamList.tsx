@@ -177,7 +177,7 @@ const TeamList: React.FC = () => {
                   id="itemsPerPage"
                   value={itemsPerPage}
                   onChange={handleItemsPerPageChange}
-                  className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="border border-gray-300 bg-white rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value={4}>4</option>
                   <option value={8}>8</option>
