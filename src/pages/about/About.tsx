@@ -112,15 +112,7 @@ const galleryItemRefs = useRef<any>([]);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
 
-
-    interface CompanyGalleryItem {
-    _id: string;
-    title: string;
-    description?: string;
-    images: string[];
-  }
 
 
   useEffect(() => {
@@ -132,8 +124,8 @@ const galleryItemRefs = useRef<any>([]);
       setCertificatesLoading(false);
     });
     
-   dispatch(getCompanyGallery({ page: currentPage, }));
-}, [dispatch, currentPage]);
+   dispatch(getCompanyGallery({ page: 1 }));
+}, [dispatch]);
 
 
 
@@ -895,9 +887,8 @@ const galleryItemRefs = useRef<any>([]);
         carousel={{
           finite: companyGallery.length <= 1,
         }}
-        on={{
-          view: (index) => {
-            // Optional: Add animation when switching slides
+       on={{
+          view: () => {
             gsap.fromTo(
               '.yarl__slide_image',
               { opacity: 0, scale: 2 },
@@ -905,6 +896,7 @@ const galleryItemRefs = useRef<any>([]);
             );
           }
         }}
+        
       />
     )}
   </div>

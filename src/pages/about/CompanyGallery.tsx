@@ -1,4 +1,4 @@
-import { Typography, Button, IconButton } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import gsap from "gsap";
@@ -40,7 +40,6 @@ const gallery = useSelector(selectCompanyGallery) as GalleryItem[];
   const [currentPage, setCurrentPage] = useState(1);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const headerRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
@@ -230,8 +229,7 @@ const gallery = useSelector(selectCompanyGallery) as GalleryItem[];
                 key={item._id}
                 className="gallery-item group cursor-pointer rounded-xl overflow-hidden shadow-lg bg-white transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
                 onClick={() => handleImageClick(index)}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
+                
               >
                 {/* Image Container with Hover Effects */}
                 <div className="relative overflow-hidden h-64">
@@ -356,7 +354,7 @@ const gallery = useSelector(selectCompanyGallery) as GalleryItem[];
             buttonNext: gallery.length > 1 ? undefined : () => null,
           }}
          on={{
-    view: (index) => {
+    view: () => {
     gsap.fromTo(
       '.yarl__slide_image',
       { opacity: 0, scale: 2 },
