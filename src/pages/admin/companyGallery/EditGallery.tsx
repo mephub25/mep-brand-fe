@@ -29,7 +29,7 @@ const EditGallery: React.FC = () => {
   const fetchGallery = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.get(`http://localhost:3000/api/v1/company-gallery/${id}`);
+      const res = await axios.get(`https://be.meperictrictech.com/api/v1/company-gallery/${id}`);
       setGallery(res.data);
       setTitle(res.data.title);
       setDescription(res.data.description || "");
@@ -99,7 +99,7 @@ const EditGallery: React.FC = () => {
       });
 
       await axios.patch(
-        `http://localhost:3000/api/v1/company-gallery/${id}`,
+        `https://be.meperictrictech.com/api/v1/company-gallery/${id}`,
         formData,
         {
           headers: {

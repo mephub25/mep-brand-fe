@@ -37,7 +37,7 @@ const CreateGallery: React.FC = () => {
     });
 
     try {
-      await axios.post("http://localhost:3000/api/v1/company-gallery", formData, {
+      await axios.post("https://be.meperictrictech.com/api/v1/company-gallery", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

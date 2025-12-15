@@ -38,7 +38,7 @@ const GalleryList: React.FC = () => {
     try {
       setLoading(true);
       const res = await axios.get<PaginationResponse>(
-        `http://localhost:3000/api/v1/company-gallery?page=${page}&limit=${limit}`
+        `https://be.meperictrictech.com/api/v1/company-gallery?page=${page}&limit=${limit}`
       );
 
       setGalleries(res.data.data || []);
@@ -62,7 +62,7 @@ const GalleryList: React.FC = () => {
     setDeletingId(id);
     try {
       const token = sessionStorage.getItem("token");
-      await axios.delete(`http://localhost:3000/api/v1/company-gallery/${id}`, {
+      await axios.delete(`https://be.meperictrictech.com/api/v1/company-gallery/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
