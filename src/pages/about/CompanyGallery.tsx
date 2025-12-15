@@ -24,10 +24,18 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
+interface GalleryItem {
+  _id: string;
+  title: string;
+  description?: string;
+  images: string[];
+}
+
 const CompanyGalleryPage = () => {
   const dispatch = useDispatch<any>();
-  const gallery = useSelector(selectCompanyGallery);
+  // const gallery = useSelector(selectCompanyGallery);
   const { total, limit } = useSelector(selectGalleryPagination);
+const gallery = useSelector(selectCompanyGallery) as GalleryItem[];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -366,55 +374,6 @@ const CompanyGalleryPage = () => {
 
       <Footer />
 
-      {/* Add CSS for custom animations */}
-      <style jsx global>{`
-        @keyframes slowZoom {
-          0% {
-            transform: scale(1.1);
-          }
-          100% {
-            transform: scale(1.15);
-          }
-        }
-
-        .gallery-item {
-          will-change: transform, opacity;
-        }
-
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-
-        /* Smooth scroll behavior */
-        html {
-          scroll-behavior: smooth;
-        }
-
-.yarl__container {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-color: rgba(0, 0, 0, 0.92) !important;
-}
-
-
-
-  /* Lightbox slide image */
-.yarl__slide img {
-  width: auto !important;
-  max-width: 90vw !important;
-  height: auto !important;
-  max-height: 80vh !important;
-  border-radius: 8px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  object-fit: contain;
-}
-
-
-      `}</style>
     </div>
   );
 };

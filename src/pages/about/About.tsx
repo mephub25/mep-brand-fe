@@ -74,6 +74,15 @@ const images = [
 
 ];
 
+
+
+interface CompanyGalleryItem {
+  _id: string;
+  title: string;
+  description?: string;
+  images: string[];
+}
+
 const About = () => {
   const dispatch = useDispatch<any>();
   const members = useSelector(selectAllMembers);
@@ -99,8 +108,8 @@ const About = () => {
 const companyGalleryRef = useRef<HTMLDivElement>(null);
 const galleryItemRefs = useRef<any>([]);
 
- 
-   const companyGallery = useSelector(selectCompanyGallery);
+  const companyGallery = useSelector(selectCompanyGallery) as CompanyGalleryItem[];
+
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
 import { useToast } from "../../../context/ToastContext";
 import ImageModal from "../../../components/admin/ImageModal";
 
@@ -223,17 +224,19 @@ const GalleryList: React.FC = () => {
 
                 {/* Actions */}
                 <div className="flex gap-2 mt-4 pt-4 border-t">
-                  <Link
-                    to={`/admin/photo/edit/${gallery._id}`}
-                    className="flex-1 px-4 py-2 bg-amber-500 text-white text-sm rounded-lg"
-                  >
-                    Edit
-                  </Link>
+                 <Link
+                   to={`/admin/photo/edit/${gallery._id}`}
+                   className="w-9 h-9 bg-gray-600 text-white rounded-lg flex items-center justify-center hover:bg-gray-700"
+                   title="Edit"
+                   aria-label="Edit photo"
+                 >
+                   <EditIcon fontSize="small" />
+                 </Link>
 
                   <button
                     disabled={deletingId === gallery._id}
                     onClick={() => handleDelete(gallery._id, gallery.title)}
-                    className="flex-1 px-4 py-2 bg-red-500 text-white text-sm rounded-lg"
+                    className="flex-1 px-4 py-2 bg-red-900 text-white text-sm rounded-lg"
                   >
                     {deletingId === gallery._id ? "Deleting..." : "Delete"}
                   </button>
