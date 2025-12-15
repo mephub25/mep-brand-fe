@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/v1/company-gallery";
+const API_URL = "https://be.meperictrictech.com/api/v1/company-gallery";
 
 // Thunk
 export const getCompanyGallery = createAsyncThunk(
