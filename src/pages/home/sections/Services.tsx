@@ -18,7 +18,7 @@ const servicesDetails = [
     title: "Electrical services",
     detail:
       "Our electrical expertise extends to the design and installation of various systems, from high-voltage transmission lines and substations to distribution networks. We specialize in lighting and power supply solutions, as well as renewable energy systems such as solar panels, hydropower plants, and wind farms. Additionally, our services include low voltage systems, including distribution networks and domestic installations.",
-    url: "/images/service-1.png",
+    url: "/images/service-1.jpeg",
   },
   {
     title: "Plumbing services",
@@ -101,7 +101,7 @@ const Services = () => {
             <div className="w-full max-w-[1150px] flex flex-col lg:flex-row gap-4 bg-black/5 backdrop-blur-sm border-2 border-primary-foreground rounded-2xl text-white overflow-clip">
               <div className={clsx("basis-1/2 relative", index % 2 !== 0 && "lg:order-last")}>
                 <div className="aspect-video lg:aspect-auto lg:absolute top-0 left-0 bottom-0 right-0 overflow-hidden p-3 lg:p-0 m-auto lg:m-3">
-                  <img src={url} alt={`service ${index}`} className="h-full object-scale-down m-auto" />
+                  <img src={url} alt={`service ${index}`} className="h-full object-scale-down m-auto rounded-md" />
                 </div>
               </div>
               <div

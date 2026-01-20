@@ -51,7 +51,7 @@
 .intro-container {
   position: relative;
   width: 100%;
-  background: url(/images/bg-1.jpg) center/cover no-repeat;
+  background: url(/images/bg-1.jpeg) center/cover no-repeat;
 }
 .intro-container::before {
   content: "";

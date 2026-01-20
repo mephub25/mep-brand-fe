@@ -115,7 +115,7 @@ const About: React.FC = () => {
           ref={purpleBoxRef}
         ></div>
         <img
-          src="/images/bg-1.jpg"
+          src="/images/bg-1.jpeg"
           alt="logo"
           className="absolute w-[80%] aspect-[9/6] bg-orange-600 left-1/2 transform -translate-x-[55%] top-1/2 -translate-y-[45%] object-cover"
         />
