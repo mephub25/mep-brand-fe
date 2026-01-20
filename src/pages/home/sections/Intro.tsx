@@ -5,14 +5,14 @@ import LoginOverlay from "../../authontication/login";
 
 const slides = [
   {
-    image: "/images/worker2.png",
+    image: "/images/engineer2.png",
     header:
       "Innovative Electrical and Mechanical Solutions for a Better Future",
     paragraph:
       "Our groundbreaking electrical and mechanical services are designed to push boundaries and drive progress. We focus on delivering efficient, sustainable solutions that meet today’s challenges while shaping a brighter tomorrow, ensuring your projects are future-ready and built to last.",
   },
   {
-    image: "/images/worker3.png",
+    image: "/images/tools.png",
     header:
       "Precision Engineering Services That Enhance and Empower Everyday Life",
     paragraph:
